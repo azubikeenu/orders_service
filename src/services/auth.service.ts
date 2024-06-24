@@ -5,32 +5,37 @@ import { inject, injectable } from "inversify";
 import { IVendorRepository } from "../repository";
 import { INTERFACE_TYPE } from "../utils";
 import { LoginDto } from "../dto";
-import * as jwt  from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 import config from "../config";
 
 @injectable()
-export class AuthService{
-    private vendorRepository: IVendorRepository;
+export class AuthService {
+  private vendorRepository: IVendorRepository;
 
-    constructor(@inject(INTERFACE_TYPE.VendorRepository) vendorRepository: IVendorRepository) {
-        this.vendorRepository = vendorRepository;
-      }
+  constructor(@inject(INTERFACE_TYPE.VendorRepository) vendorRepository: IVendorRepository) {
+    this.vendorRepository = vendorRepository;
+  }
 
-    async loginUser(loginDto : LoginDto){
-       const user = await this.vendorRepository.findByEmail( loginDto.email)
-       if(!user || ! (await user?.comparePassword(loginDto.password))) throw createHttpError(StatusCodes.UNAUTHORIZED , "Invalid username or password");
-       const token = jwt.sign({ email: user.email }, String(config.jwtSecret), {
+  async loginUser(loginDto: LoginDto) {
+    try {
+      const user = await this.vendorRepository.findByEmail(loginDto.email)
+      if (!user || !(await user?.comparePassword(loginDto.password))) throw createHttpError(StatusCodes.UNAUTHORIZED, "Invalid username or password");
+      const token = jwt.sign({ email: user.email }, String(config.jwtSecret), {
         algorithm: 'HS512',
         expiresIn: "1hr"
-    })
-    return token;
-
+      })
+      return token;
+    } catch (error: any) {
+      throw new Error(error?.message)
     }
 
 
+  }
 
-    
-    
 
-    
+
+
+
+
+
 }

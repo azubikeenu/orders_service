@@ -38,7 +38,7 @@ const routes: Route[] = [
 
 
     {
-        path: '/vendors',
+        path: '/vendor',
         routes: vendorRoutes,
     },
 ];
