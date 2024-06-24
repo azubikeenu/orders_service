@@ -4,34 +4,45 @@ import { Vendor, VendorDoc } from "../../models";
 import { IVendorRepository } from "./ivendor.repo";
 import createHttpError from "http-errors";
 import { StatusCodes } from "http-status-codes";
-import { FilterQuery, QueryOptions, Types } from "mongoose";
+import { FilterQuery, Types } from "mongoose";
 
 @injectable()
 export class VendorRepository implements IVendorRepository {
-    async findById(_id: string) {
-        if(!Types.ObjectId.isValid(_id)){
-            throw createHttpError(StatusCodes.BAD_REQUEST , "Invalid or malformed vendorId supplied")
-          }
 
-        try{
-            const vendor =  await Vendor.findById(_id)
+
+    async findByEmail(email: string) {
+        try {
+            const vendor = await Vendor.findOne({ email })
+            return vendor as VendorDoc;
+        } catch (error: any) {
+            throw createHttpError(StatusCodes.INTERNAL_SERVER_ERROR, error?.message)
+        }
+    }
+
+    async findById(_id: string) {
+        if (!Types.ObjectId.isValid(_id)) {
+            throw createHttpError(StatusCodes.BAD_REQUEST, "Invalid or malformed vendorId supplied")
+        }
+
+        try {
+            const vendor = await Vendor.findById(_id)
             return vendor;
-           }catch(error : any){
-              throw createHttpError(StatusCodes.INTERNAL_SERVER_ERROR , error?.message)
-           }
-       
+        } catch (error: any) {
+            throw createHttpError(StatusCodes.INTERNAL_SERVER_ERROR, error?.message)
+        }
+
     }
 
     async filterVendors(query: FilterQuery<VendorDoc>) {
-         try{
-          const vendor =  await Vendor.find(query)
-          return vendor;
-         }catch(error : any){
-            throw createHttpError(StatusCodes.INTERNAL_SERVER_ERROR , error?.message)
-         }
+        try {
+            const vendor = await Vendor.find(query)
+            return vendor;
+        } catch (error: any) {
+            throw createHttpError(StatusCodes.INTERNAL_SERVER_ERROR, error?.message)
+        }
     }
 
-   
+
     async doesVendorExists(email: string): Promise<Boolean> {
         const exists = await Vendor.doesEmailExist(email)
         return exists;

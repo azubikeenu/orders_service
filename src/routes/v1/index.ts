@@ -7,6 +7,9 @@ import { adminRoute } from './admin.routes';
 import { vendorRoutes } from './vendor.routes';
 
 
+import authRouter from './auth.routes';
+
+
 const router = Router();
 
 interface Route {
@@ -26,6 +29,11 @@ const routes: Route[] = [
     {
         path: '/admin',
         routes: adminRoute,
+    },
+
+    {
+        path: '/auth',
+        routes: authRouter,
     },
 
 

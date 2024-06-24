@@ -6,6 +6,7 @@ import config from '../config';
 
 interface IVendor extends Model<VendorDoc> {
     doesEmailExist: (email: string) => Promise<boolean>
+    comparePasswords:(suppliedPassword : string) => Promise<Boolean>
   }
 
 export interface VendorDoc extends Document {
@@ -22,6 +23,7 @@ export interface VendorDoc extends Document {
     coverImages: [string];
     rating: number;
     foods: any,
+    comparePassword:(suppliedPassword : string) => Promise<Boolean>
 }
 
 
@@ -76,6 +78,13 @@ VendorSchema.statics.doesEmailExist = async function (
     return Boolean(vendor)
 }
 
+
+VendorSchema.methods.comparePassword = async function (
+    candidatePassword: string
+  ): Promise<Boolean> {
+    const vendor = this as VendorDoc;
+    return bcrypt.compare(candidatePassword, vendor.password).catch(() => false);
+  };
 
 
 
