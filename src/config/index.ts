@@ -13,7 +13,8 @@ const config = {
     },
 
     port :  process.env.PORT || 5000,
-    saltWalkFactor : process.env.SALT_WALK_FACTOR || 10 
+    saltWalkFactor : process.env.SALT_WALK_FACTOR || 10 ,
+    jwtSecret : process.env.SECRET_KEY
   };
   
 

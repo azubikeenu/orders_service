@@ -10,6 +10,8 @@ import { StatusCodes } from 'http-status-codes'
 
 import config from './config'
 import { errorHandler, successHandler } from './utils'
+import { jwtStrategy } from './strategy/jwt'
+import passport from 'passport'
 
 
 
@@ -18,6 +20,8 @@ const app = express()
 
 
 //passport.use("local", localStrategy)
+
+passport.use("jwt", jwtStrategy)
 
 
 app.use(successHandler)

@@ -3,7 +3,7 @@ import { AuthService } from "../services"
 import { INTERFACE_TYPE } from "../utils"
 import { loginInput } from "../schemas"
 import { Request, Response, NextFunction } from "express"
-import { RequestWithToken } from "../types"
+import { CustomRequest } from "../types"
 import { StatusCodes } from "http-status-codes"
 
 @injectable()

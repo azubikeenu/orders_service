@@ -8,6 +8,12 @@ export type strategyCallBack = (error: any, user?: VendorDoc | false, options?: 
 //     token?: string;
 // };
 
-export type RequestWithToken<TParams = {}, TResBody = {}, TReqBody = {}, TQuery = {}> = Request<TParams, TResBody, TReqBody, TQuery> & {
+export type CustomRequest<TParams = {}, TResBody = {}, TReqBody = {}, TQuery = {}> = Request<TParams, TResBody, TReqBody, TQuery> & {
     token?: string;
+    vendor? : VendorDoc
+
 };
+
+export type JwtPayload  = {
+    email : string 
+}

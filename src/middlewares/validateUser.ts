@@ -2,13 +2,10 @@ import passport from "passport";
 import * as jwt  from "jsonwebtoken";
 import {Response,NextFunction } from "express";
 import config from "../config";
-import { RequestWithToken } from "../types";
+import { CustomRequest } from "../types";
 
 
-
-
-
-export function validateUser(req : RequestWithToken,res : Response,next :NextFunction){
+export function validateUser(req : CustomRequest,res : Response,next :NextFunction){
     passport.authenticate('local', (err : any, user : any, info : any)  => {
         if (err) return next(err);
 
