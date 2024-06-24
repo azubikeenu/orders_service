@@ -5,6 +5,7 @@ import { IVendorRepository } from "./ivendor.repo";
 import createHttpError from "http-errors";
 import { StatusCodes } from "http-status-codes";
 import { FilterQuery, Types } from "mongoose";
+import { Logger } from "../../utils";
 
 @injectable()
 export class VendorRepository implements IVendorRepository {
@@ -15,7 +16,8 @@ export class VendorRepository implements IVendorRepository {
             const vendor = await Vendor.findOne({ email })
             return vendor as VendorDoc;
         } catch (error: any) {
-            throw createHttpError(StatusCodes.INTERNAL_SERVER_ERROR, error?.message)
+            Logger.error(error)
+            throw new Error(error?.message)
         }
     }
 
@@ -28,7 +30,8 @@ export class VendorRepository implements IVendorRepository {
             const vendor = await Vendor.findById(_id)
             return vendor;
         } catch (error: any) {
-            throw createHttpError(StatusCodes.INTERNAL_SERVER_ERROR, error?.message)
+            Logger.error(error)
+            throw new Error(error?.message)
         }
 
     }
@@ -38,15 +41,22 @@ export class VendorRepository implements IVendorRepository {
             const vendor = await Vendor.find(query)
             return vendor;
         } catch (error: any) {
-            throw createHttpError(StatusCodes.INTERNAL_SERVER_ERROR, error?.message)
+            Logger.error(error)
+            throw new Error(error?.message)
         }
     }
 
 
     async doesVendorExists(email: string): Promise<Boolean> {
-        const exists = await Vendor.doesEmailExist(email)
-        return exists;
-
+        try{
+            const exists = await Vendor.doesEmailExist(email)
+            return exists;
+    
+        }catch(error : any){
+            Logger.error(error)
+            throw new Error(error?.message)
+        }
+      
     }
 
     async createVendor(input: CreateVendorDto) {
@@ -54,7 +64,8 @@ export class VendorRepository implements IVendorRepository {
             const vendor = await Vendor.create(input);
             return vendor.toJSON();
         } catch (error: any) {
-            throw createHttpError(StatusCodes.INTERNAL_SERVER_ERROR, "error occurred while creating vendor")
+            Logger.error(error)
+            throw new Error(error?.message)
         }
 
     }
