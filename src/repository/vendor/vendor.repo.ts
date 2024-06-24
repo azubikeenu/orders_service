@@ -48,15 +48,15 @@ export class VendorRepository implements IVendorRepository {
 
 
     async doesVendorExists(email: string): Promise<Boolean> {
-        try{
+        try {
             const exists = await Vendor.doesEmailExist(email)
             return exists;
-    
-        }catch(error : any){
+
+        } catch (error: any) {
             Logger.error(error)
             throw new Error(error?.message)
         }
-      
+
     }
 
     async createVendor(input: CreateVendorDto) {
