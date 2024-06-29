@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import createHttpError from "http-errors";
 import { inject, injectable } from "inversify";
 import { IVendorRepository } from "../repository";
-import { INTERFACE_TYPE } from "../utils";
+import { INTERFACE_TYPE, Logger } from "../utils";
 import { LoginDto } from "../dto";
 import * as jwt from "jsonwebtoken";
 import config from "../config";
@@ -26,6 +26,7 @@ export class AuthService {
       })
       return token;
     } catch (error: any) {
+      Logger.error(error?.message)
       throw new Error(error?.message)
     }
 

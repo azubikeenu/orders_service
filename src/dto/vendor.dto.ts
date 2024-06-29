@@ -15,3 +15,6 @@ export interface LoginDto{
     email : string,
     password: string
 }
+
+
+export type UpdateVendorDto = Omit<Partial<CreateVendorDto>, "password" | "email">

@@ -1,5 +1,5 @@
 import { injectable } from "inversify";
-import { CreateVendorDto } from "../../dto";
+import { CreateVendorDto, UpdateVendorDto } from "../../dto";
 import { Vendor, VendorDoc } from "../../models";
 import { IVendorRepository } from "./ivendor.repo";
 import createHttpError from "http-errors";
@@ -9,7 +9,6 @@ import { Logger } from "../../utils";
 
 @injectable()
 export class VendorRepository implements IVendorRepository {
-
 
     async findByEmail(email: string) {
         try {
@@ -22,9 +21,7 @@ export class VendorRepository implements IVendorRepository {
     }
 
     async findById(_id: string) {
-        if (!Types.ObjectId.isValid(_id)) {
-            throw createHttpError(StatusCodes.BAD_REQUEST, "Invalid or malformed vendorId supplied")
-        }
+        this.isValidId(_id);
 
         try {
             const vendor = await Vendor.findById(_id)
@@ -35,6 +32,9 @@ export class VendorRepository implements IVendorRepository {
         }
 
     }
+
+
+    
 
     async filterVendors(query: FilterQuery<VendorDoc>) {
         try {
@@ -68,5 +68,23 @@ export class VendorRepository implements IVendorRepository {
             throw new Error(error?.message)
         }
 
+    }
+
+    async updateVendor(patch: UpdateVendorDto, id: string) {
+        this.isValidId(id)
+        try{
+            const updatedVendor = await Vendor.findByIdAndUpdate(id , patch , { new : true})
+            return updatedVendor;
+
+        }catch(error : any){
+            Logger.error(error)
+            throw new Error(error?.message)
+        }
+    }
+
+    private isValidId(_id: string) {
+        if (!Types.ObjectId.isValid(_id)) {
+            throw createHttpError(StatusCodes.NOT_FOUND, `vendor with id ${_id} does not exist`);
+        }
     }
 }

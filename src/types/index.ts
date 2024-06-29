@@ -16,4 +16,6 @@ export type CustomRequest<TParams = {}, TResBody = {}, TReqBody = {}, TQuery = {
 
 export type JwtPayload  = {
     email : string 
+    iat? : number 
+    exp ?: number
 }
