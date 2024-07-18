@@ -19,6 +19,12 @@ container.bind(INTERFACE_TYPE.VendorController).to(VendorController)
 
 const vendorController = container.get<VendorController>(INTERFACE_TYPE.VendorController);
 
-vendorRoutes.get("/profile" ,isAuthenticated,vendorController.getProfileHandler.bind(vendorController))
+vendorRoutes.use(isAuthenticated)
 
-export {vendorRoutes}
+vendorRoutes.route("/profile").get(vendorController.getProfileHandler.bind(vendorController))
+    .patch(vendorController.updateProfile.bind(vendorController));
+
+vendorRoutes.post('/toggle-service',vendorController.updateService.bind(vendorController) )   
+
+
+export { vendorRoutes }

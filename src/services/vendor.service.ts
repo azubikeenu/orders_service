@@ -3,6 +3,8 @@ import { IVendorRepository } from "../repository";
 import { INTERFACE_TYPE, Logger } from "../utils";
 import { StatusCodes } from "http-status-codes";
 import createHttpError from "http-errors";
+import { UpdateProfileDto, UpdateVendorDto } from "../dto";
+import { boolean } from "zod";
 
 @injectable()
 export class VendorService {
@@ -19,10 +21,32 @@ export class VendorService {
       return vendor
     } catch (error: any) {
       Logger.error(error?.message)
-      throw new Error(error?.message)
+      throw error;
     }
   }
-  
 
+
+  async updateProfile(payload: UpdateProfileDto, id: string) {
+
+    try {
+      const updatedVendor = await this.vendorRepository.updateProfile(payload, id)
+      return updatedVendor;
+    } catch (error: any) {
+      Logger.error(error?.message);
+      throw error;
+    }
+
+  } 
+
+  async updateService (id: string , status : boolean) {
+    try {
+      const updatedVendor = await this.vendorRepository.updateServiceStatus(id, status)
+      return updatedVendor;
+    } catch (error: any) {
+      Logger.error(error?.message);
+      throw error;
+    }
+
+}
 
 }

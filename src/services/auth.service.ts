@@ -20,7 +20,7 @@ export class AuthService {
     try {
       const user = await this.vendorRepository.findByEmail(loginDto.email)
       if (!user || !(await user?.comparePassword(loginDto.password))) throw createHttpError(StatusCodes.UNAUTHORIZED, "Invalid username or password");
-      const token = jwt.sign({ email: user.email }, String(config.jwtSecret), {
+      const token = jwt.sign({ email: user.email , foodType : user.foodType, name : user.name }, String(config.jwtSecret), {
         algorithm: 'HS512',
         expiresIn: "1hr"
       })
@@ -29,8 +29,6 @@ export class AuthService {
       Logger.error(error?.message)
       throw new Error(error?.message)
     }
-
-
   }
 
 

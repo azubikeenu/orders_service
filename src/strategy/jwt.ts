@@ -21,7 +21,7 @@ import { JwtPayload } from '../types'
   ): Promise<void> {
     try {
       const vendor = await Vendor.findOne({email : payload.email})
-        .select('-password')
+        .select('-password -pincode')
   
       if (!vendor) {
         done(null, false , { message : "Unauthorized access"})

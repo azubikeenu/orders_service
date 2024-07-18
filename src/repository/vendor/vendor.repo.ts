@@ -1,5 +1,5 @@
 import { injectable } from "inversify";
-import { CreateVendorDto, UpdateVendorDto } from "../../dto";
+import { CreateVendorDto, UpdateProfileDto, UpdateVendorDto } from "../../dto";
 import { Vendor, VendorDoc } from "../../models";
 import { IVendorRepository } from "./ivendor.repo";
 import createHttpError from "http-errors";
@@ -9,6 +9,7 @@ import { Logger } from "../../utils";
 
 @injectable()
 export class VendorRepository implements IVendorRepository {
+   
 
     async findByEmail(email: string) {
         try {
@@ -33,8 +34,6 @@ export class VendorRepository implements IVendorRepository {
 
     }
 
-
-    
 
     async filterVendors(query: FilterQuery<VendorDoc>) {
         try {
@@ -81,6 +80,36 @@ export class VendorRepository implements IVendorRepository {
             throw new Error(error?.message)
         }
     }
+
+
+
+    async updateProfile(patch: UpdateProfileDto, id: string) {
+        this.isValidId(id)
+        try{
+            const updatedVendor = await Vendor.findByIdAndUpdate(id , patch , { new : true})
+            return updatedVendor;
+
+        }catch(error : any){
+            Logger.error(error)
+        throw new Error(error?.message)
+        }
+    }
+
+
+   async updateServiceStatus(id: string, status : boolean) {
+        this.isValidId(id)
+        try{
+            const updatedVendor = await Vendor.findByIdAndUpdate(id , {serviceAvailable : status}, {new : true} )
+            return updatedVendor;
+
+        }catch(error : any){
+            Logger.error(error)
+        throw new Error(error?.message)
+        }
+       
+    }
+
+
 
     private isValidId(_id: string) {
         if (!Types.ObjectId.isValid(_id)) {

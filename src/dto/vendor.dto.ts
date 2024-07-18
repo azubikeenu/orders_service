@@ -11,10 +11,13 @@ export interface CreateVendorDto {
 
 
 
-export interface LoginDto{
-    email : string,
+export interface LoginDto {
+    email: string,
     password: string
 }
 
 
 export type UpdateVendorDto = Omit<Partial<CreateVendorDto>, "password" | "email">
+
+export type UpdateProfileDto = Pick<Partial<CreateVendorDto>, "email" | "name" | "foodType" | "address" | "phone">
+

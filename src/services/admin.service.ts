@@ -22,7 +22,7 @@ export class AdminService {
             return response;
         } catch (error: any) {
             Logger.error(error?.message)
-            throw new Error(error?.message)
+            throw error
         }
     }
 
@@ -33,7 +33,7 @@ export class AdminService {
             return vendor
         } catch (error: any) {
             Logger.error(error?.message)
-            throw new Error(error?.message)
+           throw error;
         }
 
     }
@@ -44,7 +44,7 @@ export class AdminService {
             return allVendors;
         } catch (error: any) {
             Logger.error(error?.message)
-            throw new Error(error?.message)
+            throw error;
         }
 
     }
