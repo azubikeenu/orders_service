@@ -1,18 +1,25 @@
 
 import { inject, injectable } from "inversify";
 import { INTERFACE_TYPE } from "../utils";
-import { VendorService } from "../services";
+import { FoodService, VendorService } from "../services";
 import { CustomRequest } from "../types";
 import { NextFunction, Response } from "express";
 import { UpdateProfileDto } from "../dto";
+import { createFoodInput } from "../schemas/food.schema";
+import { StatusCodes } from "http-status-codes";
+
 
 
 @injectable()
 export class VendorController {
   private vendorService: VendorService
+  private foodService : FoodService
 
-  constructor(@inject(INTERFACE_TYPE.VendorService) vendorService: VendorService) {
+  constructor(@inject(INTERFACE_TYPE.VendorService) vendorService: VendorService ,
+  @inject(INTERFACE_TYPE.FoodService) foodService: FoodService
+       ) {
     this.vendorService = vendorService
+    this.foodService = foodService
 
   }
 
@@ -63,6 +70,29 @@ export class VendorController {
       next(error)
     }
   }
+
+  async addFood(req : CustomRequest<{},{},createFoodInput['body']> , res : Response , next : NextFunction){
+       try{
+        const {vendor} = req;
+        const food =  await this.foodService.createFood(req.body)
+        vendor?.foods.push(food);
+        await vendor?.save();
+
+        return res.status(StatusCodes.OK).json({
+          status : "success",
+          message : "Food added to vendor successfully",
+          data : {
+            food 
+          }
+        })
+
+       }catch(error : any){
+        next(error)
+       }
+         
+  }
+
+  
 
 
 }

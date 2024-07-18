@@ -1,5 +1,4 @@
 
-
 export const INTERFACE_TYPE = {
     VendorController: Symbol.for("VendorController"),
     VendorService: Symbol.for("VendorService"),
@@ -9,4 +8,6 @@ export const INTERFACE_TYPE = {
     AuthController: Symbol.for("AuthController"),
     AdminController: Symbol.for("AdminController"),
     AdminService: Symbol.for("AdminService"),
+    FoodRepository: Symbol.for("FoodRepository"),
+    FoodService: Symbol.for("FoodService"),
 }
