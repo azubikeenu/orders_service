@@ -30,7 +30,7 @@ export class VendorController {
   async getProfileHandler(req: CustomRequest, res: Response, next: NextFunction) {
     try {
       const { vendor } = req;
-      return res.status(200).json({
+      return res.status(StatusCodes.OK).json({
         status: "success",
         data: {
           vendor
@@ -47,7 +47,7 @@ export class VendorController {
       const { vendor } = req;
       await this.vendorService.updateProfile(req.body, vendor?.toJSON()._id)
 
-      return res.status(200).json({
+      return res.status(StatusCodes.OK).json({
         status: "success",
         message: "vendor successfully updated"
       })
