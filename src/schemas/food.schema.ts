@@ -13,11 +13,22 @@ const payload = {
         category: string({ required_error: "food type is required" }),
         readyTime: number({ required_error: "readyTime is required" }),
         price: number({ required_error: "price is required" }),
-        vendorId : string({required_error : "vendorId is required"})
 
     })
 
 }
+
+
+const params = {
+    params: object({
+      foodId: string({ required_error: 'food Id is required' }),
+    }),
+  };
+
+
+export const findFoodSchema = object({
+    ...params
+})
 
 
 
@@ -28,3 +39,6 @@ export const createFoodSchema = object({
 
 
 export type createFoodInput =   TypeOf<typeof createFoodSchema>
+
+
+export type findFoodInput =   TypeOf<typeof findFoodSchema>

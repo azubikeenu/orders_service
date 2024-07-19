@@ -9,7 +9,7 @@ import { Logger } from "../../utils";
 
 @injectable()
 export class VendorRepository implements IVendorRepository {
-   
+
 
     async findByEmail(email: string) {
         try {
@@ -71,11 +71,11 @@ export class VendorRepository implements IVendorRepository {
 
     async updateVendor(patch: UpdateVendorDto, id: string) {
         this.isValidId(id)
-        try{
-            const updatedVendor = await Vendor.findByIdAndUpdate(id , patch , { new : true})
+        try {
+            const updatedVendor = await Vendor.findByIdAndUpdate(id, patch, { new: true })
             return updatedVendor;
 
-        }catch(error : any){
+        } catch (error: any) {
             Logger.error(error)
             throw new Error(error?.message)
         }
@@ -85,30 +85,41 @@ export class VendorRepository implements IVendorRepository {
 
     async updateProfile(patch: UpdateProfileDto, id: string) {
         this.isValidId(id)
-        try{
-            const updatedVendor = await Vendor.findByIdAndUpdate(id , patch , { new : true})
+        try {
+            const updatedVendor = await Vendor.findByIdAndUpdate(id, patch, { new: true })
             return updatedVendor;
 
-        }catch(error : any){
+        } catch (error: any) {
             Logger.error(error)
-        throw new Error(error?.message)
+            throw new Error(error?.message)
         }
     }
 
 
-   async updateServiceStatus(id: string, status : boolean) {
+    async updateServiceStatus(id: string, status: boolean) {
         this.isValidId(id)
-        try{
-            const updatedVendor = await Vendor.findByIdAndUpdate(id , {serviceAvailable : status}, {new : true} )
+        try {
+            const updatedVendor = await Vendor.findByIdAndUpdate(id, { serviceAvailable: status }, { new: true })
             return updatedVendor;
 
-        }catch(error : any){
+        } catch (error: any) {
             Logger.error(error)
-        throw new Error(error?.message)
+            throw new Error(error?.message)
         }
-       
+
     }
 
+    async getVendorFoods(_id: string) {
+        try {
+            const vendor = await Vendor.findById(_id).populate('foods')
+            return vendor?.foods || [];
+
+        } catch (error: any) {
+            Logger.error(error)
+            throw new Error(error?.message)
+        }
+
+    }
 
 
     private isValidId(_id: string) {

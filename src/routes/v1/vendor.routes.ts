@@ -5,7 +5,7 @@ import { INTERFACE_TYPE } from "../../utils";
 import { isAuthenticated, validate } from "../../middlewares";
 import { FoodService, VendorService } from "../../services";
 import { FoodRepository, IFoodRepository, IVendorRepository, VendorRepository } from "../../repository";
-import { createFoodSchema } from "../../schemas";
+import { createFoodSchema, findFoodSchema } from "../../schemas";
 
 
 const vendorRoutes = Router()
@@ -33,6 +33,10 @@ vendorRoutes.route("/profile").get(vendorController.getProfileHandler.bind(vendo
 vendorRoutes.post('/toggle-service',vendorController.updateService.bind(vendorController) )   
 
 vendorRoutes.post("/add-food", validate(createFoodSchema), vendorController.addFood.bind(vendorController));
+
+vendorRoutes.get("/foods", vendorController.getFoods.bind(vendorController));
+
+vendorRoutes.post("/foods/upload-image/:foodId", validate(findFoodSchema),vendorController.uploadFoodImages.bind(vendorController));
 
 
 export { vendorRoutes }

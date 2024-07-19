@@ -9,9 +9,11 @@ import createHttpError, { HttpError } from 'http-errors'
 import { StatusCodes } from 'http-status-codes'
 
 import config from './config'
+
 import { errorHandler, successHandler } from './utils'
 import { jwtStrategy } from './strategy/jwt'
 import passport from 'passport'
+import fileUpload from 'express-fileupload'
 
 
 
@@ -31,6 +33,8 @@ app.use(errorHandler)
 app.use(express.json())
 
 app.use(express.urlencoded({ extended: true }))
+
+app.use(fileUpload({useTempFiles : true}))
 
 
 app.use('/api/v1', router)

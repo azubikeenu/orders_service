@@ -36,9 +36,9 @@ export class VendorService {
       throw error;
     }
 
-  } 
+  }
 
-  async updateService (id: string , status : boolean) {
+  async updateService(id: string, status: boolean) {
     try {
       const updatedVendor = await this.vendorRepository.updateServiceStatus(id, status)
       return updatedVendor;
@@ -47,8 +47,17 @@ export class VendorService {
       throw error;
     }
 
-}
+  }
 
+  async getVendorFoods(id: string) {
+    try {
+      const foods = await this.vendorRepository.getVendorFoods(id)
+      return foods;
+    } catch (error: any) {
+      Logger.error(error?.message);
+      throw error;
+    }
 
-
+  }
+  
 }

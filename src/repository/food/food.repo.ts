@@ -8,6 +8,7 @@ import { Logger } from "../../utils";
 @injectable()
 export class FoodRepository implements IFoodRepository {
 
+
     async createFood(payload: CreateFoodDto) {
         try {
             const food = await Food.create(payload);
@@ -17,5 +18,19 @@ export class FoodRepository implements IFoodRepository {
             Logger.error(error);
             throw new Error(error?.message)
         }
+    }
+
+
+    async findById(id: string) {
+
+        try {
+            const food = await Food.findById(id);
+            return food;
+
+        } catch (error: any) {
+            Logger.error(error);
+            throw new Error(error?.message)
+        }
+
     }
 }

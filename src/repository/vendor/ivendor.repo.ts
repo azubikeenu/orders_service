@@ -12,5 +12,6 @@ export interface IVendorRepository {
   updateVendor(input : UpdateVendorDto  , id : string)
   updateProfile(input : UpdateProfileDto , id : string)
   updateServiceStatus(id : string, status : boolean);
+  getVendorFoods(_id: string)
 
 }
